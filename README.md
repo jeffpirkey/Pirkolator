@@ -12,7 +12,7 @@ The use and distribution terms for this software are covered by the Eclipse Publ
 
 For more information, see [LICENSE](LICENSE.html)
 
-## Owners
+## Project Lead
 
 Jeff Pirkey - jeff.pirkey@realitywarpsoftware.com
 
