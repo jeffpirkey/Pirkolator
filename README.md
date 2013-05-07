@@ -17,5 +17,3 @@ For more information, see [LICENSE](LICENSE.html)
 Jeff Pirkey - jeff.pirkey@realitywarpsoftware.com
 
 ## Contributors
-
-Kevin Witten
