@@ -1,6 +1,6 @@
 # Pirkolator
 
-Easy to use, portable, scalable, and fast distributed pub/sub in Java.
+Easy to use, portable, scalable, distributed, and fast pub/sub in Java.
 
 The Pirkolator was designed to bring the data to the analytic to the user. Using the Pirkolator, a developer can focus on delivering something that works, instead of figuring out how to get data, save data, or distribute results.
 
