@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config />
+
+    <!-- DEFAULT STORES -->
+    <!-- Analytic View Store -->
+    <bean id="analyticViewStore" class="com.rws.pirkolator.core.store.AnalyticViewStore" />
+    
+    <!-- DAL View Store -->
+    <bean id="dalViewStore" class="com.rws.pirkolator.core.store.DalViewStore" />
+    
+    <!-- Subscriber View Store -->
+    <bean id="subscriberViewStore" class="com.rws.pirkolator.core.store.SubscriberViewStore" />
+    
+    <!-- Publisher View Store -->
+    <bean id="publisherViewStore" class="com.rws.pirkolator.core.store.PublisherViewStore" />
+    
+    <!-- Request View Store -->
+    <bean id="requestViewStore" class="com.rws.pirkolator.core.store.RequestViewStore" />
+    
+    <!-- Series View Store -->
+    <bean id="seriesViewStore" class="com.rws.pirkolator.core.store.SeriesViewStore" />
+    
+    <!-- System View Store -->
+    <bean id="systemViewStore" class="com.rws.pirkolator.core.store.SystemViewStore" />
+    
+    <!-- System Status View store -->
+    <bean id="systemStatusViewStore" class="com.rws.pirkolator.core.store.SystemStatusViewStore" />
+
+    <import resource="classpath*:config/stores/**/*.xml"/>
+</beans>

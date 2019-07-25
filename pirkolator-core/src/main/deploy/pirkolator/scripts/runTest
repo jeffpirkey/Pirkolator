@@ -1,0 +1,3 @@
+#!/bin/sh
+echo Copy files for test...
+cp resources/data/* dropbox/nmea/gpsfiles

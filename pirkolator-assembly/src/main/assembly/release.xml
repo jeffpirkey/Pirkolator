@@ -1,0 +1,40 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0
+           http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+
+    <id>pirkolator-distribution</id>
+
+    <baseDirectory>pirkolator-${project.version}</baseDirectory>
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <formats>
+        <format>dir</format>
+        <format>tar.gz</format>
+    </formats>
+
+    <dependencySets>
+        <!-- Extract release bundles to resources -->
+        <dependencySet>
+            <useProjectArtifact>false</useProjectArtifact>
+            <includes>
+                <include>com.rws.pirkolator:*:tar.gz:pirkolator-default-resources</include>
+            </includes>
+            <fileMode>0777</fileMode>
+            <directoryMode>0755</directoryMode>
+            <outputDirectory>/</outputDirectory>
+            <unpack>true</unpack>
+        </dependencySet>
+
+        <dependencySet>
+            <useProjectArtifact>false</useProjectArtifact>
+            <includes>
+                <!-- Only include jar files -->
+                <include>*:*:jar</include>
+            </includes>
+            <useTransitiveDependencies>true</useTransitiveDependencies>
+            <outputDirectory>/lib</outputDirectory>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </dependencySet>
+    </dependencySets>
+</assembly>

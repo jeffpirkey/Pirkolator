@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:hz="http://www.hazelcast.com/schema/spring"
+    xsi:schemaLocation="
+            http://www.springframework.org/schema/beans 
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context 
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.hazelcast.com/schema/spring
+            http://www.hazelcast.com/schema/spring/hazelcast-spring-3.3.xsd">
+
+    <context:annotation-config />
+
+    <bean id="systemProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="location" value="classpath:config/system.properties" />
+    </bean>
+
+    <hz:hazelcast id="hazelcastInstance">
+        <hz:config>
+            <hz:group name="dev" password="password" />
+            <hz:properties>
+                <hz:property name="hazelcast.merge.first.run.delay.seconds">5</hz:property>
+                <hz:property name="hazelcast.merge.next.run.delay.seconds">5</hz:property>
+                <hz:property name="hazelcast.logging.type">slf4j</hz:property>
+            </hz:properties>
+            <hz:network port="5701" port-auto-increment="true">
+                <hz:join>
+                    <hz:multicast enabled="false" multicast-group="224.2.2.3" multicast-port="54327" />
+                    <hz:tcp-ip enabled="true">
+                        <hz:members>127.0.0.1</hz:members>
+                    </hz:tcp-ip>
+                </hz:join>
+            </hz:network>
+            <hz:map name="map" backup-count="2" max-size="0" eviction-percentage="30" read-backup-data="true"
+                eviction-policy="NONE" merge-policy="hz.ADD_NEW_ENTRY" />
+        </hz:config>
+    </hz:hazelcast>
+
+    <!-- Pirkolator System Definition -->
+    <bean id="pirkolatorId" class="java.util.UUID" factory-method="fromString">
+        <constructor-arg value="${pirkolator.id}" />
+    </bean>
+
+    <bean id="systemInfo" class="com.rws.pirkolator.model.SystemInfo">
+        <constructor-arg index="0" ref="pirkolatorId" />
+        <constructor-arg index="1" value="Core Pirkolator" />
+    </bean>
+    
+    <!-- System Ready Notifier -->
+    <bean id="systemReady" class="com.rws.pirkolator.core.engine.SystemReady">
+        <constructor-arg index="0" ref="systemInfo" />
+    </bean>
+    
+    <!-- System resource manager -->
+    <bean id="systemResourceManager" class="com.rws.pirkolator.core.engine.SystemResourceManager" />
+    
+    <!-- System Registry -->
+    <bean id="systemRegistry" class="com.rws.pirkolator.core.registry.SystemRegistry">
+        <constructor-arg ref="systemInfo" />
+    </bean>
+    
+    <!-- Status Registry -->
+    <bean id="statusRegistry" class="com.rws.pirkolator.core.registry.StatusRegistry">
+        <constructor-arg index="0" ref="systemInfo" />
+    </bean>
+    
+    <!-- Series Registry -->
+    <bean id="seriesRegistry" class="com.rws.pirkolator.core.registry.SeriesRegistry" />
+    
+    <!-- Data grids -->
+    <bean id="hazelcastGrid" class="com.rws.pirkolator.core.grid.HazelcastGrid" />
+    <bean id="hazelcastPubSub" class="com.rws.pirkolator.core.engine.HazelcastPubSub">
+        <constructor-arg ref="hazelcastGrid" />
+    </bean>
+
+    <bean id="localGrid" class="com.rws.pirkolator.core.grid.LocalGrid" />
+    <bean id="localPubSub" class="com.rws.pirkolator.core.engine.LocalPubSub">
+        <constructor-arg ref="localGrid" />
+    </bean>
+
+    <!-- Data Access Layer -->
+    <bean id="dal" class="com.rws.pirkolator.core.data.engine.Dal" />
+    
+    <!-- Hub -->
+    <bean id="messageCopier" class="com.rws.pirkolator.core.engine.KryoMessageCopier" />
+    <bean id="hub" class="com.rws.pirkolator.core.engine.Hub">
+        <constructor-arg ref="messageCopier" />
+    </bean>
+
+    <!-- Request Coordinator -->
+    <bean id="requestCoordinator" class="com.rws.pirkolator.core.request.RequestCoordinator" />
+
+    <!-- Applications -->
+    <import resource="classpath:config/bundles-context.xml" />
+    
+    <!-- Data access -->
+    <import resource="classpath:config/dals-context.xml" />
+
+    <!-- Stores -->
+    <import resource="classpath:config/stores-context.xml" />
+    
+    <!-- Transforms -->
+    <import resource="classpath:config/transforms-context.xml" />
+
+</beans>
+

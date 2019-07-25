@@ -1,0 +1,6 @@
+#!/bin/sh
+pidfile="pirkolator-java.pid"
+pid=`cat $pidfile`
+echo Killing process pid $pid
+kill $pid
+rm $pidfile

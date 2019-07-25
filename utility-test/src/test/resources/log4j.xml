@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC
+  "-//APACHE//DTD LOG4J 1.2//EN" "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <appender class="org.apache.log4j.ConsoleAppender" name="A1">
+        <param value="DEBUG" name="Threshold" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param value="[%p] %-4r : %d{HH:mm:ss,SSS} [%t] %c %x--&gt;%n%m%n%n" name="ConversionPattern" />
+        </layout>
+    </appender>
+    <appender class="org.apache.log4j.RollingFileAppender" name="F1">
+        <param value="false" name="Append" />
+        <param value="./log/pirkolatorUtilityTest-test.log" name="File" />
+        <param value="0" name="MaxBackupIndex" />
+        <param value="100MB" name="MaxFileSize" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param value="[%p] %-4r : %d{HH:mm:ss,SSS} [%t] %c %x--&gt;%n%m%n%n" name="ConversionPattern" />
+        </layout>
+    </appender>
+    <logger name="backtype.storm">
+        <level value="warn" />
+    </logger>
+    <logger name="com.hazelcast">
+        <level value="info" />
+    </logger>
+    <logger name="com.rws">
+        <level value="debug" />
+    </logger>
+    <logger name="org.apache">
+        <level value="warn" />
+    </logger>
+    <logger name="org.apache.camel">
+        <level value="warn" />
+    </logger>
+    <logger name="org.springframework">
+        <level value="warn" />
+    </logger>
+    <root>
+        <level value="debug" />
+        <appender-ref ref="A1" />
+        <appender-ref ref="F1" />
+    </root>
+</log4j:configuration>

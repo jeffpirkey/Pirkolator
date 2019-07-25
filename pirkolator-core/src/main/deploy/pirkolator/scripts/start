@@ -1,0 +1,20 @@
+#!/bin/sh
+echo Removing log files before starting...
+rm -fv log/*
+echo Finished removing log files.
+
+JAVA_CP=resources:
+JAVA_CP=$JAVA_CP./lib/*:
+
+PIRKOLATOR_JAVA_LIBRARY_PATH=./lib
+
+JAVA_OPTS="-Xms192m"
+JAVA_OPTS="$JAVA_OPTS -Xmx2048m"
+JAVA_OPTS="$JAVA_OPTS -XX:MaxPermSize=120m"
+JAVA_OPTS="$JAVA_OPTS -Dlog4j.configuration=resources/config/log4j.xml"
+JAVA_OPTS="$JAVA_OPTS -Djava.security.manager" 
+JAVA_OPTS="$JAVA_OPTS -Djava.security.policy=resources/config/security/app.policy"
+JAVA_OPTS="$JAVA_OPTS -Djava.library.path=$PIRKOLATOR_JAVA_LIBRARY_PATH"
+
+exec java $JAVA_OPTS -cp $JAVA_CP com.rws.pirkolator.core.Bootstrapper > /dev/null 2>&1 & echo $! > pirkolator-java.pid
+echo Done
